@@ -5,7 +5,7 @@ pipeline {
     options {
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
-        ansiColor('xterm')
+        ansicolor('xterm')
     }
   
     stages {
@@ -19,26 +19,25 @@ pipeline {
         }
         stage('plan') {
             steps {
-                sh 'echo this is test' 
+                sh """
+                cd 01-vpc
+                terraform plan
+                """
                 
             }
         }
-        stage('Deploy') {
-            steps {
-                sh 'echo this is deploy'
-            }
-        }
-        stage ("print params"){
-          steps{
-                echo "Hello ${params.PERSON}"
-                echo "Biography: ${params.BIOGRAPHY}"
-                echo "Toggle: ${params.TOGGLE}"
-                echo "Choice: ${params.CHOICE}"
-                echo "Password: ${params.PASSWORD}"
-                echo "triggered test again"
-                echo "some failure"
-            }
-        }
+        // stage('Deploy') {
+        //     input {
+        //         message "Should we continue?"
+        //         ok "Yes, we should."
+        //     }
+        //     steps {
+        //         sh """
+        //         cd 01-vpc
+        //         terraform apply -auto-approve
+        //         """
+        //     }
+        // }
     }
     post { 
         always { 
